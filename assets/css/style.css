@@ -1,0 +1,66 @@
+/* setting */
+/* navbar */
+/* card */
+/* Section on to top */
+
+
+
+/* setting */
+html, body{
+    height: 100%;
+}
+
+/* navbar */
+.navbar-cl {
+    background-color: rgba(0, 0, 0, 0.2173);
+}
+.navbar {
+    padding: 15px;
+    transition: 0.5s;
+}
+
+/* card */
+.card-animate {
+    position: relative;
+    overflow: hidden;
+}
+.card-animate::after {
+    content: '';
+    padding-top: 56.25%;
+    display: block;
+    height: 0;
+}
+.card-animate img {
+    height: 120%;
+    position: absolute;
+    top: 0;
+    transition: 1s;
+}
+.card-animate img:hover {
+    transform: scale(1.2)
+}
+.margin-t {
+    margin-top: -10px;
+}
+
+
+/* Section on to top */
+.to-top{
+    position: fixed;
+    bottom: 2%;
+    right: 2%;
+    background: rgb(22, 148, 250);
+    width: 40px;
+    height: 40px;
+    color: rgb(255, 255, 255);
+    z-index: 9999;
+    border-radius: 50%;
+    font-size: 25px;
+    cursor: pointer;
+    text-align: center;
+
+}
+.to-top:hover{
+    color: rgb(1, 22, 21);
+    background: #006eff
+}

@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link href="https://fonts.googleapis.com/css?family=Mitr" rel="stylesheet">
-    <title>Photo Contest</title>
+    <title>My Post</title>
 
     <style>
         html > * {
