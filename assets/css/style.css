@@ -1,6 +1,7 @@
 /* setting */
 /* navbar */
 /* card */
+/* profile */
 /* Section on to top */
 
 
@@ -43,6 +44,16 @@ html, body{
     margin-top: -10px;
 }
 
+/* profile */
+.img-profile{
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    display: block;
+}
+.profile-top{
+    margin-top: -100px;
+}
 
 /* Section on to top */
 .to-top{

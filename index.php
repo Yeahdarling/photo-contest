@@ -1,3 +1,31 @@
+<?php 
+    require_once('php/connect.php');
+    $sql = "SELECT COUNT(*) AS total FROM photo";
+    $result = mysqli_query($conn,$sql);    
+    $row = mysqli_fetch_assoc($result);
+
+    $total_rows = $row['total'];
+
+    $per_page = 3; //per page
+    $page = isset($_GET['page']) ? $_GET['page'] : 1;
+    $total_page = ceil($total_rows / $per_page);
+
+    if ($page > $total_page || $page < 1) {
+        header('Location: index.php');
+        exit;
+    }
+
+    $prev_page = $page-1;
+    $next_page = $page+1;
+    $row_start = ($page - 1) * $per_page;
+
+    $sql = "SELECT * FROM photo ORDER BY img_id ASC LIMIT $row_start , $per_page ";
+    $result = mysqli_query($conn, $sql);
+    $num_row = mysqli_num_rows($result);
+
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,62 +65,29 @@
         </div>
     </div>
 
+    <!-- ส่งประกวด -->
+    <div class="text-center">
+        <a href="mypost.php" class="btn btn-outline-primary">ส่งภาพเข้าประกวด</a>
+    </div>
+
     <!-- content -->
     <section class="container shadow p-3 mb-5 bg-white rounded">
         <div class="row">
-            <article class="col-12 col-sm-6 col-md-4 p-2">
-                <div class="card h-100">
-                    <a href="detail.php" class="card-animate">
-                        <img class="card-img-top" src="assets/images/logo.jpg" alt="Card image cap">
-                    </a>
-                    <div class="text-center text-primary pt-1">
-                        จำนวนโหวด ( 14 )
-                    </div>
-                    <div class="card-body margin-t">
-                        <h5 class="card-title">ชื่อผู้โพส</h5>
-                        <p class="card-text">บอกให้เรารู้สักนิดเกี่ยวกับรูปภาพนี้ บอกให้เรารู้สักนิดเกี่ยวกับรูปภาพนี้ บอกให้เรารู้สักนิดเกี่ยวกับรูปภาพนี้</p>
-                    </div>
-                    <div class="card-footer text-center">
-                        <div class="btn-group" role="group" aria-label="Basic example">
-                            <button type="button" class="btn btn-info float-left">Left</button>
-                            <button type="button" class="btn btn-outline-info">Middle</button>
-                            <button type="button" class="btn btn-info float-right">Vote</button>
-                        </div>
-                    </div>
-                </div>
-            </article>
+            <?php 
+                if ($num_row > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+            ?>
             <article class="col-12 col-sm-6 col-md-4 p-2">
                 <div class="card h-100">
                     <a href="#" class="card-animate">
-                        <img class="card-img-top" src="assets/images/carousel1.jpg" alt="Card image cap">
+                        <img class="card-img-top" src="assets/images/<?php echo $row['image'] ?>" alt="Card image cap">
                     </a>
                     <div class="text-center text-primary pt-1">
                         จำนวนโหวด ( 14 )
                     </div>
                     <div class="card-body margin-t">
-                        <h5 class="card-title">ชื่อผู้โพส</h5>
-                        <p class="card-text">บอกให้เรารู้สักนิดเกี่ยวกับรูปภาพนี้</p>
-                    </div>
-                    <div class="card-footer text-center">
-                        <div class="btn-group d-block" role="group" aria-label="Basic example">
-                            <button type="button" class="btn btn-info float-left">Left</button>
-                            <button type="button" class="btn btn-outline-info">Middle</button>
-                            <button type="button" class="btn btn-info float-right">Vote</button>
-                        </div>
-                    </div>
-                </div>
-            </article>
-            <article class="col-12 col-sm-6 col-md-4 p-2">
-                <div class="card h-100">
-                    <a href="#" class="card-animate">
-                        <img class="card-img-top" src="assets/images/carousel2.jpg" alt="Card image cap">
-                    </a>
-                    <div class="text-center text-primary pt-1">
-                        จำนวนโหวด ( 14 )
-                    </div>
-                    <div class="card-body margin-t">
-                        <h5 class="card-title">ชื่อผู้โพส</h5>
-                        <p class="card-text">บอกให้เรารู้สักนิดเกี่ยวกับรูปภาพนี้ บอกให้เรารู้สักนิดเกี่ยวกับรูปภาพนี้</p>
+                        <h5 class="card-title">ภาพจาก : <?php echo $row['name'] ?></h5>
+                        <p class="card-text"><?php echo $row['description'] ?></p>
                     </div>
                     <div class="card-footer">
                             <button type="button" class="btn btn-info ">Left</button>
@@ -100,8 +95,28 @@
                     </div>
                 </div>
             </article>
+            <?php
+                    }
+                } else {
+                    echo 'No Data';
+                }
+            ?>
         </div>
     </section>
+
+    <div class="text-center">
+        <?php
+            if ($total_page > 1) {
+                for($i = 1; $i<=$total_page; $i++) {
+        ?>
+        <a href="index.php?page=<?php echo $i;?>"> 
+                <span class="mb-3 btn btn-outline-primary"><?php echo $i; ?></span></li>
+        </a>
+        <?php
+                }
+            }
+        ?>
+    </div>
 
     <!-- Section on to top -->
     <div class="to-top">

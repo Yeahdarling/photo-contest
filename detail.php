@@ -1,3 +1,15 @@
+<?php 
+    require_once('php/connect.php'); 
+    $sql = " SELECT * FROM photo WHERE img_id = '".$_GET['img_id']."' ";
+    $result = $conn->query($sql);
+    $row = $result->fetch_assoc();
+
+
+    $select = " SELECT * FROM members WHERE mem_id = '".$row['mem_id']."' "; 
+    $answer = $conn->query($select);
+    $line = $answer->fetch_assoc();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,14 +53,15 @@
     <article class="col-12">
         <div>
             <div class="text-center">
-                <img class="rounded" src="assets/images/carousel3.jpg" alt="Card image cap">
+                <img class="rounded" src="assets/images/<?php echo $row['image']; ?>" alt="Card image cap">
             </div>
                 <div class="text-center text-primary p-4">
                 จำนวนโหวด ( 14 )
             </div>
             <div>
-                <h5 class="card-title text-center p-3">ชื่อผู้โพส</h5>
-                <p class="card-text">บอกให้เรารู้สักนิดเกี่ยวกับรูปภาพนี้ บอกให้เรารู้สักนิดเกี่ยวกับรูปภาพนี้ บอกให้เรารู้สักนิดเกี่ยวกับรูปภาพนี้</p>
+                <h5 class="card-title text-center p-3">ภาพจาก <?php echo $line['name']; ?></h5>
+                <h4 class="text-center">ชื่อภาพ : <?php echo $row['img_name'] ?></h4>
+                <h5 class="text-center card-text">เกี่ยวกับภาพ : <?php echo $row['description']; ?></h5>
             </div>
             <div class="text-center p-5">
                 <div class="btn-group" role="group" aria-label="Basic example">

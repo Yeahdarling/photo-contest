@@ -1,3 +1,17 @@
+<?php 
+    require_once('php/connect.php'); 
+    if (!isset($_SESSION['mem_id'])) {
+        header('location:login.php');
+        exit;
+    }
+    
+    $sql = " SELECT * FROM photo WHERE mem_id = '".$_SESSION['mem_id']."' ";
+    $result = $conn->query($sql) or die($conn->error);
+ 
+
+    
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,73 +47,47 @@
     <!-- jumbotron -->
     <div class="jumbotron jumbotron-fluid">
         <div class="container pt-5">
-            <h1 class="display-4 text-center">Photo Contest</h1>
+            <h1 class="display-4 text-center">My Post</h1>
         </div>
     </div>
+
+    <!-- Post photo -->
+    <div class="text-center">
+        <a href="photo-add.php" class="btn btn-outline-primary">อัพโหลดภาพ</a>
+    </div>
+
 
     <!-- content -->
     <section class="container shadow p-3 mb-5 bg-white rounded">
         <div class="row">
+            <?php 
+                if ($result->num_rows) {
+                    while ($row = $result->fetch_assoc()) {
+            ?>
             <article class="col-12 col-sm-6 col-md-4 p-2">
                 <div class="card h-100">
-                    <a href="detail.php" class="card-animate">
-                        <img class="card-img-top" src="assets/images/logo.jpg" alt="Card image cap">
+                    <a href="detail.php?img_id=<?php echo $row['img_id'] ?>" class="card-animate">
+                        <img class="card-img-top" src="assets/images/<?php echo $row['image'] ?>" alt="Card image cap">
                     </a>
                     <div class="text-center text-primary pt-1">
                         จำนวนโหวด ( 14 )
                     </div>
                     <div class="card-body margin-t">
-                        <h5 class="card-title">ชื่อผู้โพส</h5>
-                        <p class="card-text">บอกให้เรารู้สักนิดเกี่ยวกับรูปภาพนี้ บอกให้เรารู้สักนิดเกี่ยวกับรูปภาพนี้ บอกให้เรารู้สักนิดเกี่ยวกับรูปภาพนี้</p>
-                    </div>
-                    <div class="card-footer text-center">
-                        <div class="btn-group" role="group" aria-label="Basic example">
-                            <button type="button" class="btn btn-info float-left">Left</button>
-                            <button type="button" class="btn btn-outline-info">Middle</button>
-                            <button type="button" class="btn btn-info float-right">Vote</button>
-                        </div>
-                    </div>
-                </div>
-            </article>
-            <article class="col-12 col-sm-6 col-md-4 p-2">
-                <div class="card h-100">
-                    <a href="#" class="card-animate">
-                        <img class="card-img-top" src="assets/images/carousel1.jpg" alt="Card image cap">
-                    </a>
-                    <div class="text-center text-primary pt-1">
-                        จำนวนโหวด ( 14 )
-                    </div>
-                    <div class="card-body margin-t">
-                        <h5 class="card-title">ชื่อผู้โพส</h5>
-                        <p class="card-text">บอกให้เรารู้สักนิดเกี่ยวกับรูปภาพนี้</p>
-                    </div>
-                    <div class="card-footer text-center">
-                        <div class="btn-group d-block" role="group" aria-label="Basic example">
-                            <button type="button" class="btn btn-info float-left">Left</button>
-                            <button type="button" class="btn btn-outline-info">Middle</button>
-                            <button type="button" class="btn btn-info float-right">Vote</button>
-                        </div>
-                    </div>
-                </div>
-            </article>
-            <article class="col-12 col-sm-6 col-md-4 p-2">
-                <div class="card h-100">
-                    <a href="#" class="card-animate">
-                        <img class="card-img-top" src="assets/images/carousel2.jpg" alt="Card image cap">
-                    </a>
-                    <div class="text-center text-primary pt-1">
-                        จำนวนโหวด ( 14 )
-                    </div>
-                    <div class="card-body margin-t">
-                        <h5 class="card-title">ชื่อผู้โพส</h5>
-                        <p class="card-text">บอกให้เรารู้สักนิดเกี่ยวกับรูปภาพนี้ บอกให้เรารู้สักนิดเกี่ยวกับรูปภาพนี้</p>
+                        <h5 class="card-title">ชื่อภาพ : <?php echo $row['img_name']; ?></h5>
+                        <p class="card-text"><?php echo $row['description']; ?></p>
                     </div>
                     <div class="card-footer">
-                            <button type="button" class="btn btn-info ">Left</button>
-                            <button type="button" class="btn btn-info float-right">Vote</button>
+                        <button type="button" class="btn btn-info ">Left</button>
+                        <button type="button" class="btn btn-info float-right">Vote</button>
                     </div>
                 </div>
             </article>
+            <?php
+                    }
+                } else {
+                    echo 'No Data';
+                }
+            ?>
         </div>
     </section>
 

@@ -1,3 +1,11 @@
+<?php 
+    require_once('php/connect.php');
+    if (isset($_SESSION['mem_id'])) {
+        echo '<script> alert("คุณอยู่ในระบบอยู่แล้ว") </script>';
+        header('location:index.php');
+        exit;
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,7 +47,7 @@
                 <div class="card">
                     <h5 class="card-header text-center">เข้าสู่ระบบ</h5>
                     <div class="card-body">
-                        <form class="form" method="POST" action="#">
+                        <form class="form" method="POST" action="php/check-login.php">
                             <div class="input-group mb-2 mr-sm-2">
                                 <div class="input-group-prepend">
                                 <div class="input-group-text"><i class="fas fa-user"></i></div>
@@ -50,7 +58,7 @@
                                 <div class="input-group-prepend">
                                 <div class="input-group-text"><i class="fas fa-key"></i></div>
                                 </div>
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
                             </div>
                             <button type="submit" name="submit" class="btn btn-primary btn-block mb-2">เข้าสู่ระบบ</button>
                             <span class="float-right">สมัครสมาชิก <a href="register.php">คลิกที่นี่</a></span>
