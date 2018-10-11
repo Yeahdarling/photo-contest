@@ -10,6 +10,13 @@
     $line = $answer->fetch_assoc();
 
 ?>
+<?php 
+    if (isset($_SESSION['mem_id'])) {
+        $pull = " SELECT * FROM members WHERE mem_id = '".$_SESSION['mem_id']."' ";
+        $res = $conn->query($pull);
+        $point = $res->fetch_assoc();
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,29 +53,56 @@
     <div class="jumbotron jumbotron-fluid">
         <div class="container pt-5">
             <h1 class="display-4 text-center">Photo</h1>
+            <!-- point -->
+                <?php
+                    if (isset($_SESSION['mem_id'])) {
+                ?>
+                        <h3 class="text-center text-success mt-3">คุณมี [ <?php echo $point['points'] ?> ] สิทธิ์ลงคะแนน</h3>
+                <?php
+                    }
+                ?>
+            <!-- /point -->
         </div>
     </div>
 
     <!-- content -->
-    <article class="col-12">
-        <div>
-            <div class="text-center">
-                <img class="rounded" src="assets/images/<?php echo $row['image']; ?>" alt="Card image cap">
-            </div>
-                <div class="text-center text-primary p-4">
-                จำนวนโหวด ( 14 )
-            </div>
-            <div>
-                <h5 class="card-title text-center p-3">ภาพจาก <?php echo $line['name']; ?></h5>
-                <h4 class="text-center">ชื่อภาพ : <?php echo $row['img_name'] ?></h4>
-                <h5 class="text-center card-text">เกี่ยวกับภาพ : <?php echo $row['description']; ?></h5>
-            </div>
-            <div class="text-center p-5">
-                <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-info float-left">Left</button>
-                    <button type="button" class="btn btn-outline-info">Middle</button>
-                    <button type="button" class="btn btn-info float-right">Vote</button>
+    <article class="container-fluid my-3">
+        <div class="row">
+            <div class="col-12">
+                <div class="text-center m-5">
+                    <img class="rounded w-100" src="assets/images/<?php echo $row['image']; ?>" alt="Card image cap">
                 </div>
+                    <div class="text-center text-primary p-4">
+                    ได้รับ ( <?php echo$row['vote'] ?> ) คะแนน
+                </div>
+                <div>
+                    <h5 class="card-title text-center p-3">ภาพจาก <?php echo $line['name']; ?></h5>
+                    <h4 class="text-center">ชื่อภาพ : <?php echo $row['img_name'] ?></h4>
+                    <h5 class="text-center card-text">เกี่ยวกับภาพ : <?php echo $row['description']; ?></h5>
+                </div>
+                <!-- button -->
+                    <?php 
+                        if (isset($_SESSION['mem_id'])) {
+                            if ($point['points'] <= 0) {
+                    ?>
+                            <button class="btn btn-danger d-block mx-auto my-5" disabled>คุณใช้คะแนนไปหมดแล้ว</button>
+                    <?php
+                            } else {
+                                ?>
+                            <div class="text-center p-3">
+                                <a href="php/vote.php?img_id=<?php echo $row['img_id'] ?>" style="width: 200px;" class="btn btn-danger text-light">+1 <i class="fas fa-heart"></i></a>
+                            </div>
+                    <?php
+                            }
+                        } else {
+                    ?>
+                            <div class="text-center p-3">
+                                <a href="php/vote.php?img_id=<?php echo $row['img_id'] ?>" style="width: 200px;" class="btn btn-danger text-light">+1 <i class="fas fa-heart"></i></a>
+                            </div>
+                    <?php
+                        }
+                    ?>
+                <!-- /button -->
             </div>
         </div>
     </article>

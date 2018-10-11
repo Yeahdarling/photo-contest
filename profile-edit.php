@@ -52,19 +52,17 @@
         </div>
     </section>
     
-    <!-- profile -->
+    <!-- profile-edit -->
     <section class="container my-5">
         <div class="row">
-            
-
             <div class="col-12 profile-top">
                 <img src="assets/images/<?php echo $row['mem_img']; ?>" class="img-profile rounded-circle img-thumbnail" alt="Profile Image">
-                <!-- Button trigger modal -->
+            <!-- Button trigger modal -->
                 <button type="button" class="my-3 mx-auto d-block btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                 เปลี่ยนรูปภาพ
                 </button>
-
-                <!-- Modal -->
+            <!-- /Button trigger modal -->
+            <!-- Modal -->
                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -92,9 +90,8 @@
                     </div>
                 </div>
                 </div>
-
-
-
+            <!-- /Modal -->
+            <!-- card body -->
                 <div class="card">
                     <div class="card-body">
                         <form id="formUpdate" method="POST" action="php/update-pro.php">
@@ -117,6 +114,7 @@
                         </form> 
                     </div>
                 </div>
+            <!-- /card body -->
             </div>
         </div>
     </section>

@@ -22,8 +22,13 @@
     $sql = "SELECT * FROM photo ORDER BY img_id ASC LIMIT $row_start , $per_page ";
     $result = mysqli_query($conn, $sql);
     $num_row = mysqli_num_rows($result);
-
-
+?>
+<?php 
+    if (isset($_SESSION['mem_id'])) {
+        $pull = " SELECT * FROM members WHERE mem_id = '".$_SESSION['mem_id']."' ";
+        $res = $conn->query($pull);
+        $point = $res->fetch_assoc();
+    }
 
 ?>
 <!DOCTYPE html>
@@ -62,6 +67,15 @@
     <div class="jumbotron jumbotron-fluid">
         <div class="container pt-5">
             <h1 class="display-4 text-center">Photo Contest</h1>
+            <!-- point -->
+                <?php 
+                    if (isset($_SESSION['mem_id'])) {
+                ?>
+                        <h3 class="text-center text-success mt-3">คุณมี [ <?php echo $point['points'] ?> ] สิทธิ์ลงคะแนน</h3>
+                <?php
+                }
+                ?>
+            <!-- /point -->
         </div>
     </div>
 
@@ -73,25 +87,47 @@
     <!-- content -->
     <section class="container shadow p-3 mb-5 bg-white rounded">
         <div class="row">
+        <!-- loop photo -->
             <?php 
                 if ($num_row > 0) {
                     while ($row = mysqli_fetch_assoc($result)) {
             ?>
             <article class="col-12 col-sm-6 col-md-4 p-2">
                 <div class="card h-100">
-                    <a href="#" class="card-animate">
+                    <a href="detail.php?img_id=<?php echo $row['img_id'] ?>" class="card-animate">
                         <img class="card-img-top" src="assets/images/<?php echo $row['image'] ?>" alt="Card image cap">
                     </a>
                     <div class="text-center text-primary pt-1">
-                        จำนวนโหวด ( 14 )
+                        ได้รับ ( <?php echo $row['vote']; ?> ) คะแนน
                     </div>
                     <div class="card-body margin-t">
                         <h5 class="card-title">ภาพจาก : <?php echo $row['name'] ?></h5>
                         <p class="card-text"><?php echo $row['description'] ?></p>
                     </div>
                     <div class="card-footer">
-                            <button type="button" class="btn btn-info ">Left</button>
-                            <button type="button" class="btn btn-info float-right">Vote</button>
+                    <!-- button -->
+                        <?php 
+                            if (isset($_SESSION['mem_id'])) {
+                                if ($point['points'] <= 0) {
+                                    ?>
+                                    <button class="btn btn-danger d-block mx-auto" disabled>คุณใช้คะแนนไปหมดแล้ว</button>
+                        <?php
+                                } else {
+                                    ?>
+                                    <div class="text-center">
+                                        <a href="php/vote.php?img_id=<?php echo $row['img_id'] ?>" style="width: 200px;" class="btn btn-danger text-light">+1 <i class="fas fa-heart"></i></a>
+                                    </div>
+                        <?php
+                                }
+                            } else {
+                        ?>
+                                <div class="text-center">
+                                    <a href="php/vote.php?img_id=<?php echo $row['img_id'] ?>" style="width: 200px;" class="btn btn-danger text-light">+1 <i class="fas fa-heart"></i></a>
+                                </div>
+                        <?php
+                            }
+                        ?>
+                    <!-- /button -->
                     </div>
                 </div>
             </article>
@@ -101,9 +137,11 @@
                     echo 'No Data';
                 }
             ?>
+        <!-- /loop photo -->
         </div>
     </section>
 
+    <!-- paging -->
     <div class="text-center">
         <?php
             if ($total_page > 1) {

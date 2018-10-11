@@ -44,14 +44,13 @@
         </div>
     </div>
 
-    <!-- content -->
+    <!-- form add photo -->
     <section class="container my-3">
         <div class="row">
             <div class="col-12">
                 <form class="form" id="formAdd" method="POST" action="php/add-photo.php" enctype="multipart/form-data">
                     <div class="form-row">
-
-                        <!-- img -->
+                    <!-- img -->
                         <div class="form-group col-12">
                             <div id="imgs" class="custom-file">
                                 <input type="file" class="custom-file-input mt-2" name="file" id="customFile">
@@ -64,8 +63,7 @@
                         <article id="image" class="form-group col-12">
                             <img src="assets/images/cam1.png" class="d-block mx-auto img-profile rounded img-thumbnail" alt="">
                         </article>
-                        <!-- img -->
-
+                    <!-- /img -->
                         <div class="form-group col-12">
                             <label for="img_name">ชื่อภาพ</label>
                             <input type="text" class="form-control" name="img_name" id="img_name">
@@ -81,6 +79,7 @@
             </div>
         </div>
     </section>
+    <!-- /form add photo -->
 
     <!-- Section on to top -->
     <div class="to-top">

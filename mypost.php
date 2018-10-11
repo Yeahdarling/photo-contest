@@ -7,9 +7,10 @@
     
     $sql = " SELECT * FROM photo WHERE mem_id = '".$_SESSION['mem_id']."' ";
     $result = $conn->query($sql) or die($conn->error);
- 
 
-    
+    $limit = " SELECT * FROM members WHERE mem_id = '".$_SESSION['mem_id']."' ";
+    $answer = $conn->query($limit);
+    $line = $answer->fetch_assoc();
 
 ?>
 <!DOCTYPE html>
@@ -47,19 +48,33 @@
     <!-- jumbotron -->
     <div class="jumbotron jumbotron-fluid">
         <div class="container pt-5">
-            <h1 class="display-4 text-center">My Post</h1>
+            <h1 class="display-4 text-center">My Post</h1>           
         </div>
     </div>
 
-    <!-- Post photo -->
-    <div class="text-center">
-        <a href="photo-add.php" class="btn btn-outline-primary">อัพโหลดภาพ</a>
-    </div>
+    <!-- add photo -->
+        <?php 
+            if ($line['page_num'] >= 3) {
+        ?>
+                <div class="text-center">
+                    <button class="btn btn-primary" disabled>ครบจำนวนส่งประกวด</button>
+                </div>
+        <?php
+            } else {
+        ?>
+                <div class="text-center">
+                    <a href="photo-add.php" class="btn btn-outline-primary"><i class="fas fa-plus"></i> add photo</a>
+                </div>
+        <?php
+            }
+        ?>
+    <!-- /add photo -->
 
 
     <!-- content -->
     <section class="container shadow p-3 mb-5 bg-white rounded">
         <div class="row">
+        <!-- loop img -->
             <?php 
                 if ($result->num_rows) {
                     while ($row = $result->fetch_assoc()) {
@@ -70,15 +85,16 @@
                         <img class="card-img-top" src="assets/images/<?php echo $row['image'] ?>" alt="Card image cap">
                     </a>
                     <div class="text-center text-primary pt-1">
-                        จำนวนโหวด ( 14 )
+                        ได้รับ ( <?php echo $row['vote'] ?> ) คะแนน
                     </div>
                     <div class="card-body margin-t">
                         <h5 class="card-title">ชื่อภาพ : <?php echo $row['img_name']; ?></h5>
                         <p class="card-text"><?php echo $row['description']; ?></p>
                     </div>
-                    <div class="card-footer">
-                        <button type="button" class="btn btn-info ">Left</button>
-                        <button type="button" class="btn btn-info float-right">Vote</button>
+                    <div class="card-footer text-center">
+                        <a href="#" onclick="deleteItem(<?php echo $row['img_id']; ?>);" class="w-50 btn btn-sm btn-danger">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </a>
                     </div>
                 </div>
             </article>
@@ -87,9 +103,15 @@
                 } else {
                     echo 'No Data';
                 }
-            ?>
+            ?>   
+        <!-- /loop img --> 
         </div>
     </section>
+
+    <!-- button back -->
+    <div class="text-center pb-3">
+        <a href="index.php" class="btn btn-outline-warning"> << Back</a>
+    </div>
 
     <!-- Section on to top -->
     <div class="to-top">
@@ -104,5 +126,15 @@
     <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="assets/js/main.js"></script>
+    <script>
+        function deleteItem (id) { 
+            if( confirm('Are you sure, you want to delete this item?') == true){
+                window.location=`php/delete-photo.php?img_id=${id}`;
+                // window.location='delete.php?id='+id;
+                }
+            };
+
+    </script>
+
 </body>
 </html>
