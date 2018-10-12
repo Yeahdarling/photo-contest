@@ -1,12 +1,12 @@
 <?php 
     require_once('php/connect.php');
-    $sql = "SELECT COUNT(*) AS total FROM photo";
+    $sql = "SELECT COUNT(*) AS total FROM `photo` WHERE `status` = 0 ";
     $result = mysqli_query($conn,$sql);    
     $row = mysqli_fetch_assoc($result);
 
     $total_rows = $row['total'];
 
-    $per_page = 3; //per page
+    $per_page = 12; //per page
     $page = isset($_GET['page']) ? $_GET['page'] : 1;
     $total_page = ceil($total_rows / $per_page);
 
@@ -19,7 +19,7 @@
     $next_page = $page+1;
     $row_start = ($page - 1) * $per_page;
 
-    $sql = "SELECT * FROM photo ORDER BY img_id ASC LIMIT $row_start , $per_page ";
+    $sql = "SELECT * FROM `photo` WHERE `status` = 0 ORDER BY img_id ASC LIMIT $row_start , $per_page ";
     $result = mysqli_query($conn, $sql);
     $num_row = mysqli_num_rows($result);
 ?>
@@ -107,17 +107,25 @@
                     <div class="card-footer">
                     <!-- button -->
                         <?php 
+                            
                             if (isset($_SESSION['mem_id'])) {
-                                if ($point['points'] <= 0) {
-                                    ?>
-                                    <button class="btn btn-danger d-block mx-auto" disabled>คุณใช้คะแนนไปหมดแล้ว</button>
+                                if ($_SESSION['mem_id'] == $row['mem_id']) {
+                        ?>
+                                    <button class="btn btn-warning d-block mx-auto text-white" style="width: 200px;" disabled>+1 <i class="fas fa-heart"></i></button>
+
                         <?php
                                 } else {
+                                    if ($point['points'] <= 0) {
+                                    ?>
+                                    <button class="btn btn-danger d-block mx-auto" disabled>คุณสิทธิ์ลงคะแนนไปหมดแล้ว</button>
+                        <?php
+                                    } else {
                                     ?>
                                     <div class="text-center">
                                         <a href="php/vote.php?img_id=<?php echo $row['img_id'] ?>" style="width: 200px;" class="btn btn-danger text-light">+1 <i class="fas fa-heart"></i></a>
                                     </div>
                         <?php
+                                    }
                                 }
                             } else {
                         ?>
@@ -148,7 +156,7 @@
                 for($i = 1; $i<=$total_page; $i++) {
         ?>
         <a href="index.php?page=<?php echo $i;?>"> 
-                <span class="mb-3 btn btn-outline-primary"><?php echo $i; ?></span></li>
+                <span class="mb-3 btn btn-outline-primary <?=$page==$i?'active':''; ?> "><?php echo $i; ?></span></li>
         </a>
         <?php
                 }

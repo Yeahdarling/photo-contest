@@ -4,6 +4,9 @@
         header('location:../index.php');
         exit;
     }
-    session_destroy();
+    unset($_SESSION['mem_id']);
+    unset($_SESSION['name']);
+    unset($_SESSION['mem_img']);
+    
     header('location:../index.php');
 ?>

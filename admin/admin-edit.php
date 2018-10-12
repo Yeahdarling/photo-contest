@@ -6,34 +6,10 @@
         exit;
     }
 
-    $sql = "SELECT COUNT(*) AS total FROM photo";
-    $result = mysqli_query($conn,$sql);    
-    $row = mysqli_fetch_assoc($result);
-
-    $total_rows = $row['total'];
-
-    $per_page = 3; //per page
-    $page = isset($_GET['page']) ? $_GET['page'] : 1;
-    $total_page = ceil($total_rows / $per_page);
-
-    if ($page > $total_page || $page < 1) {
-        header('Location: index.php');
-        exit;
-    }
-
-    $prev_page = $page-1;
-    $next_page = $page+1;
-    $row_start = ($page - 1) * $per_page;
-
-    $sql = "SELECT * FROM photo ORDER BY img_id ASC LIMIT $row_start , $per_page ";
-    $result = mysqli_query($conn, $sql);
-    $num_row = mysqli_num_rows($result);
-
+    $sql = " SELECT * FROM `photo` WHERE `img_id` = '".$_GET['img_id']."' ";
+    $result = $conn->query($sql);
+    $row = $result->fetch_assoc();
 ?>
-<?php 
-    // $select = " SELECT * FROM members WHERE mem_id = '".$row['mem_id']."' ";
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -105,85 +81,39 @@
     <!-- jumbotron -->
     <div class="jumbotron jumbotron-fluid">
         <div class="container pt-5">
-            <h1 class="display-4 text-center">Photo List</h1>
+            <h1 class="display-4 text-center">Admin Edit</h1>
         </div>
     </div>
 
-    <!-- content -->
-    <table id="dataTable" class="table table-bordered table-striped">
-        <thead>
-            <tr class="text-center">
-                <th>ID</th>
-                <th>Photo</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Vote</th>
-                <th>Status</th>
-                <th>Mem_id</th>
-                <th>Post_at</th>
-                <th>Edit</th>
-                <th>Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-        <?php 
-            if ($num_row > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    ?>
-            <tr>
-                <td class="text-center"><?=$row['img_id']; ?></td>
-                <td><img class="img-fluid d-block mx-auto" src="../assets/images/<?=$row['image']; ?>" width="150px" alt=""></td>
-                <td><?=$row['img_name']; ?></td>
-                <td><?=$row['description']; ?></td>
-                <td class="text-center"><?=$row['vote']; ?></td>
-                <th class="text-center">
-                    <?php 
-                        if ($row['status']==0) {
-                    ?>
-                            <a href="process/downstat.php?img_id=<?=$row['img_id']; ?>"><i class="fas fa-check fa-2x text-success"></i></a>
-                    <?php
-                        } else {
-                    ?>
-                            <a href="process/upstat.php?img_id=<?=$row['img_id']; ?>"><i class="fas fa-2x fa-times text-danger"></i></a>
-                    <?php
-                        }
-                    ?>
-                </th>
-                <th class="text-center"><?=$row['mem_id']; ?></th>
-                <th class="text-center"><?=$row['posted_at']; ?></th>
-                <td class="text-center">
-                    <a href="admin-edit.php?img_id=<?=$row['img_id']; ?>" class="btn btn-sm btn-warning text-white">
-                        <i class="fas fa-edit"></i> Edit
-                    </a> 
-                </td>
-                <td class="text-center">
-                    <a href="#" onclick="deleteItem(<?=$row['img_id']; ?>);" class="btn btn-sm btn-danger">
-                        <i class="fas fa-trash-alt"></i> Delete
-                    </a>
-                </td>
-            </tr>
-        <?php
-                }
-            } else {
-                echo 'No Data';
-            }
-        ?>
-        </tbody>
-    </table>
-    <!-- paging -->
-    <div class="text-center">
-        <?php
-            if ($total_page > 1) {
-                for($i = 1; $i<=$total_page; $i++) {
-        ?>
-        <a href="admin-page.php?page=<?php echo $i;?>"> 
-                <span class="mb-3 btn btn-outline-primary <?=$page==$i?'active':''; ?> "><?php echo $i; ?></span></li>
-        </a>
-        <?php
-                }
-            }
-        ?>
-    </div>
+    <!-- admin edit -->
+    <section class="container">
+        <div class="row">
+            <form class="col-12" method="POST" action="process/edit-admin.php">
+                <div class="form-row my-5">
+                    <h3 class="text-center">
+                        img_id : <?=$row['img_id'] ?>
+                    </h3>
+                <!-- img -->
+                    <div class="mx-auto my-3">
+                        <img class="w-100 rounded" src="../assets/images/<?=$row['image']; ?>">
+                    </div>
+                <!-- /img -->
+                    <div class="form-group col-12">
+                        <label for="img_name">ชื่อภาพ</label>
+                        <input type="text" class="form-control" name="img_name" id="img_name" value="<?=$row['img_name'] ?>">
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="description">เกี่ยวกับภาพ</label>
+                        <input type="text" class="form-control" name="description" id="description" value="<?=$row['description'] ?>">
+                    </div>
+                        <input type="hidden" class="form-control" name="img_id" id="img_id" value="<?=$row['img_id'] ?>">
+                    <a href="admin-page.php" class="d-block mt-3 btn btn-warning float-left">ย้อนกลับ</a>
+                    <input name="submit" type="submit" id="submit" class="d-block mt-3 btn btn-primary ml-auto" value="บันทึก">
+                </div>
+            </form>
+        </div>
+    </section>
+
 
     <!-- Section on to top -->
     <div class="to-top">
@@ -198,14 +128,6 @@
     <script src="../node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="../assets/js/main.js"></script>
-    <script>
-        function deleteItem (id) { 
-            if( confirm('Are you sure, you want to delete this item?') == true){
-                window.location=`process/admin-delete.php?img_id=${id}`;
-                // window.location='delete.php?id='+id;
-                }
-            };
 
-    </script>
 </body>
 </html>
