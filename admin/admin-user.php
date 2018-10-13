@@ -6,7 +6,7 @@
         exit;
     }
 
-    $sql = "SELECT COUNT(*) AS total FROM photo";
+    $sql = "SELECT COUNT(*) AS total FROM members";
     $result = mysqli_query($conn,$sql);    
     $row = mysqli_fetch_assoc($result);
 
@@ -25,7 +25,7 @@
     $next_page = $page+1;
     $row_start = ($page - 1) * $per_page;
 
-    $sql = "SELECT * FROM photo ORDER BY img_id ASC LIMIT $row_start , $per_page ";
+    $sql = "SELECT * FROM members ORDER BY mem_id ASC LIMIT $row_start , $per_page ";
     $result = mysqli_query($conn, $sql);
     $num_row = mysqli_num_rows($result);
 
@@ -111,17 +111,16 @@
     <!-- content -->
     <table id="dataTable" class="table table-bordered table-striped">
         <thead>
-            <tr>
+            <tr class="text-center">
                 <th>ID</th>
-                <th>Photo</th>
                 <th>Name</th>
-                <th>Description</th>
-                <th>Vote</th>
-                <th>Status</th>
-                <th>Owner ( id : name )</th>
-                <th>Post_at</th>
-                <th>Edit</th>
-                <th>Delete</th>
+                <th>E-mail</th>
+                <th>Mem_img</th>
+                <th>Username</th>
+                <th>Page_num</th>
+                <th>Point</th>
+                <th>Facebook_id</th>
+                <th>Created_at</th>
             </tr>
         </thead>
         <tbody>
@@ -130,36 +129,15 @@
                 while ($row = mysqli_fetch_assoc($result)) {
                     ?>
             <tr>
-                <td class="text-center"><?=$row['img_id']; ?></td>
-                <td><img class="img-fluid d-block mx-auto" src="../assets/images/<?=$row['image']; ?>" width="150px" alt=""></td>
-                <td><?=$row['img_name']; ?></td>
-                <td><?=$row['description']; ?></td>
-                <td class="text-center"><?=$row['vote']; ?></td>
-                <td class="text-center">
-                    <?php 
-                        if ($row['status']==0) {
-                    ?>
-                            <a href="process/downstat.php?img_id=<?=$row['img_id']; ?>"><i class="fas fa-check fa-2x text-success"></i></a>
-                    <?php
-                        } else {
-                    ?>
-                            <a href="process/upstat.php?img_id=<?=$row['img_id']; ?>"><i class="fas fa-2x fa-times text-danger"></i></a>
-                    <?php
-                        }
-                    ?>
-                </td>
-                <td><?=$row['mem_id']; ?> : <?=$row['name']; ?></td>
-                <td class="text-center"><?=$row['posted_at']; ?></td>
-                <td class="text-center">
-                    <a href="admin-edit.php?img_id=<?=$row['img_id']; ?>" class="btn btn-sm btn-warning text-white">
-                        <i class="fas fa-edit"></i> Edit
-                    </a> 
-                </td>
-                <td class="text-center">
-                    <a href="#" onclick="deleteItem(<?=$row['img_id']; ?>);" class="btn btn-sm btn-danger">
-                        <i class="fas fa-trash-alt"></i> Delete
-                    </a>
-                </td>
+                <td class="text-center"><?=$row['mem_id']; ?></td>
+                <td><?=$row['name']; ?></td>
+                <td><?=$row['email']; ?></td>
+                <td><img class="img-fluid d-block mx-auto" src="../assets/images/<?=$row['mem_img']; ?>" width="150px" alt=""></td>
+                <td class="text-center"><?=$row['username']; ?></td>
+                <td class="text-center"><?=$row['page_num']; ?></td>
+                <td class="text-center"><?=$row['points']; ?></td>
+                <td class="text-center"><?=$row['facebook_id']; ?></td>
+                <td class="text-center"><?=$row['created_at']; ?></td>
             </tr>
         <?php
                 }
@@ -171,15 +149,14 @@
         <tfoot>
             <tr class="text-center">
                 <th>ID</th>
-                <th>Photo</th>
                 <th>Name</th>
-                <th>Description</th>
-                <th>Vote</th>
-                <th>Status</th>
-                <th>Mem_id</th>
-                <th>Post_at</th>
-                <th>Edit</th>
-                <th>Delete</th>
+                <th>E-mail</th>
+                <th>Mem_img</th>
+                <th>Username</th>
+                <th>Page_num</th>
+                <th>Point</th>
+                <th>Facebook_id</th>
+                <th>Created_at</th>
             </tr>
         </tfoot>
     </table>

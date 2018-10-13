@@ -45,7 +45,7 @@
     <link rel="mask-icon" href="assets/images/favicon/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
-    <!-- favicon -->
+    <!-- /favicon -->
     <link rel="stylesheet" href="node_modules/font-awesome5/css/fontawesome-all.css">
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
@@ -94,15 +94,34 @@
             ?>
             <article class="col-12 col-sm-6 col-md-4 p-2">
                 <div class="card h-100">
-                    <a href="detail.php?img_id=<?php echo $row['img_id'] ?>" class="card-animate">
+                <!-- modal -->
+                    <a href="#modal_<?=$row['img_id']; ?>" class="card-animate" data-toggle="modal" data-target="#modal_<?=$row['img_id']; ?>">
                         <img class="card-img-top" src="assets/images/<?php echo $row['image'] ?>" alt="Card image cap">
                     </a>
+                    
+                    <div id="modal_<?=$row['img_id']; ?>" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <img class="card-img-top" src="assets/images/<?php echo $row['image'] ?>" alt="Card image cap">
+                            <div class="text-center text-primary pt-1">
+                                ได้รับ ( <?php echo $row['vote']; ?> ) คะแนน
+                            </div>
+                            <div class="card-body margin-t">
+                                <h4 class="card-text text-center"><?php echo $row['img_name'] ?></h4>
+                                <h5 class="card-title">ภาพจาก : <?php echo $row['name'] ?></h5>
+                                <p><?=$row['description']; ?></p>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                <!-- /modal -->
+
                     <div class="text-center text-primary pt-1">
                         ได้รับ ( <?php echo $row['vote']; ?> ) คะแนน
                     </div>
                     <div class="card-body margin-t">
+                        <h4 class="card-text text-center"><?php echo $row['img_name'] ?></h4>
                         <h5 class="card-title">ภาพจาก : <?php echo $row['name'] ?></h5>
-                        <p class="card-text"><?php echo $row['description'] ?></p>
                     </div>
                     <div class="card-footer">
                     <!-- button -->

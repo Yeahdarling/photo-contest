@@ -31,11 +31,12 @@
     <link rel="mask-icon" href="assets/images/favicon/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
-    <!-- favicon -->
+    <!-- /favicon -->
     <link rel="stylesheet" href="node_modules/font-awesome5/css/fontawesome-all.css">
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link href="https://fonts.googleapis.com/css?family=Mitr" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" />
     <title>Detail</title>
 
     <style>
@@ -70,33 +71,54 @@
         <div class="row">
             <div class="col-12">
                 <div class="text-center m-5">
-                    <img class="rounded w-100" src="assets/images/<?php echo $row['image']; ?>" alt="Card image cap">
+                    <a>
+                        <img class="rounded img-fluid" src="assets/images/<?php echo $row['image']; ?>" data-toggle="modal" data-target=".bd-example-modal-lg" alt="Card image cap">
+                    </a>
+                    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content bg-light">
+                                <img class="rounded img-fluid" src="assets/images/<?php echo $row['image']; ?>" alt="Card image cap">
+                                <div class="text-center text-primary p-1">
+                                    ได้รับ ( <?php echo$row['vote'] ?> ) คะแนน
+                                </div>
+                                <h5 class="card-title text-center">ภาพจาก : <?php echo $line['name']; ?></h5>
+                                <h4 class="text-center">ชื่อภาพ : <?php echo $row['img_name'] ?></h4>
+                                <h5 class="text-center card-text">เกี่ยวกับภาพ : <?php echo $row['description']; ?></h5>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                    <div class="text-center text-primary p-4">
+                <div class="text-center text-primary p-4">
                     ได้รับ ( <?php echo$row['vote'] ?> ) คะแนน
                 </div>
-                <div>
+                <div class="mb-3">
                     <h5 class="card-title text-center p-3">ภาพจาก <?php echo $line['name']; ?></h5>
                     <h4 class="text-center">ชื่อภาพ : <?php echo $row['img_name'] ?></h4>
                     <h5 class="text-center card-text">เกี่ยวกับภาพ : <?php echo $row['description']; ?></h5>
                 </div>
                 <!-- button -->
-                    <?php 
+                    <?php          
                         if (isset($_SESSION['mem_id'])) {
-                            if ($point['points'] <= 0) {
+                            if ($_SESSION['mem_id'] == $row['mem_id']) {
                     ?>
-                            <button class="btn btn-danger d-block mx-auto my-5" disabled>คุณใช้คะแนนไปหมดแล้ว</button>
+                                <button class="btn btn-warning d-block mx-auto text-white" style="width: 200px;" disabled>+1 <i class="fas fa-heart"></i></button>
                     <?php
                             } else {
+                                if ($point['points'] <= 0) {
                                 ?>
-                            <div class="text-center p-3">
-                                <a href="php/vote.php?img_id=<?php echo $row['img_id'] ?>" style="width: 200px;" class="btn btn-danger text-light">+1 <i class="fas fa-heart"></i></a>
-                            </div>
+                                <button class="btn btn-danger d-block mx-auto" disabled>คุณสิทธิ์ลงคะแนนไปหมดแล้ว</button>
                     <?php
+                                } else {
+                                ?>
+                                <div class="text-center">
+                                    <a href="php/vote.php?img_id=<?php echo $row['img_id'] ?>" style="width: 200px;" class="btn btn-danger text-light">+1 <i class="fas fa-heart"></i></a>
+                                </div>
+                    <?php
+                                }
                             }
                         } else {
                     ?>
-                            <div class="text-center p-3">
+                            <div class="text-center">
                                 <a href="php/vote.php?img_id=<?php echo $row['img_id'] ?>" style="width: 200px;" class="btn btn-danger text-light">+1 <i class="fas fa-heart"></i></a>
                             </div>
                     <?php
@@ -119,6 +141,12 @@
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
     <script src="assets/js/main.js"></script>
+
+    <script>
+        $('.image-link').magnificPopup({type:'image'});
+    </script>
+
 </body>
 </html>

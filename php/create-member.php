@@ -3,15 +3,19 @@
     if (isset($_POST['submit'])) {
         $check_sql = " SELECT * FROM members WHERE username = '".$conn->real_escape_string($_POST['username'])."' ";     
         $check_user = $conn->query($check_sql);
+        
 
         if (!$check_user->num_rows) {
             $hashed = password_hash($conn->real_escape_string($_POST['password']), PASSWORD_DEFAULT);
             $date = date('Y-m-d H:i:s');
-            $sql = " INSERT INTO `members` (`name`, `email`, `username`, `password`, `created_at`) 
+            $imgDefault = 'avatar.png';
+            $sql = " INSERT INTO `members` (`name`, `email`, `mem_img`, `username`, `password`, `points`, `created_at`) 
                     VALUES ('".$conn->real_escape_string($_POST['name'])."', 
-                            '".$conn->real_escape_string($_POST['email'])."', 
+                            '".$conn->real_escape_string($_POST['email'])."',
+                            '".$conn->real_escape_string($imgDefault)."',  
                             '".$conn->real_escape_string($_POST['username'])."', 
                             '".$conn->real_escape_string($hashed)."', 
+                            '".$conn->real_escape_string(3)."',
                             '".$conn->real_escape_string($date)."') ";
             $result = $conn->query($sql) or die($conn->error);
             if ($result) {
