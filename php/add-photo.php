@@ -11,12 +11,13 @@
         $url = '../assets/images/'.$new_name;        
         if (move_uploaded_file($_FILES['file']['tmp_name'], $url )) {
             $date = date("Y-m-d H:i:s");
-            $sql = " INSERT INTO `photo` (`image`, `img_name`, `description`, `mem_id`, `name`, `posted_at`) 
+            $sql = " INSERT INTO `photo` (`image`, `img_name`, `description`, `mem_id`, `name`, `status`, `posted_at`) 
                     VALUES ('".$conn->real_escape_string($new_name)."', 
                             '".$conn->real_escape_string($_POST['img_name'])."', 
                             '".$conn->real_escape_string($_POST['description'])."', 
                             '".$conn->real_escape_string($_SESSION['mem_id'])."',
                             '".$conn->real_escape_string($_SESSION['name'])."',
+                            '1',
                             '".$conn->real_escape_string($date)."') ";
             $result = $conn->query($sql) or die($conn->error);
             if ($result) {

@@ -1,4 +1,4 @@
-<?php 
+<?php
     require_once('../php/connect.php');
     if (!isset($_SESSION['admin_name'])) {
         echo '<script> alert(" Isset ??") </script>';
@@ -7,7 +7,7 @@
     }
 
     $sql = "SELECT * FROM photo";
-    $result = mysqli_query($conn,$sql);    
+    $result = mysqli_query($conn, $sql);
 
 ?>
 <!DOCTYPE html>
@@ -52,9 +52,9 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
-                <?php  
+                <?php
                     if (isset($_SESSION['admin_name'])) {
-                ?>
+                        ?>
                         <li class="nav-item dropdown ml-auto">
                             <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Welcome Admin
@@ -69,7 +69,7 @@
                         </li>
                 <?php
                     } else {
-                ?>
+                        ?>
                         <li class="nav-item ml-auto">
                             <a class="btn btn-success px-4 m-sm-1 mt-1" href="#">Admin System</a>
                         </li>
@@ -90,77 +90,61 @@
     </div>
 
     <!-- content -->
-    <table id="dataTable" class="table table-bordered table-striped">
-        <thead>
-            <tr class="text-center">
-                <th>ID</th>
-                <th>Photo</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Vote</th>
-                <th>Status</th>
-                <th>Owner ( id : name )</th>
-                <th>Post_at</th>
-                <th>Edit</th>
-                <th>Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-        <?php 
-                while ($row = mysqli_fetch_assoc($result)) {
-                    ?>
-            <tr>
-                <td class="text-center"><?=$row['img_id']; ?></td>
-                <td><img class="img-fluid d-block mx-auto" src="../assets/images/<?=$row['image']; ?>" width="150px" alt=""></td>
-                <td><?=$row['img_name']; ?></td>
-                <td><?=$row['description']; ?></td>
-                <td class="text-center"><?=$row['vote']; ?></td>
-                <td class="text-center">
-                    <?php 
-                        if ($row['status']==0) {
-                    ?>
-                            <a href="process/downstat.php?img_id=<?=$row['img_id']; ?>"><i class="fas fa-check fa-2x text-success"></i></a>
-                    <?php
-                        } else {
-                    ?>
-                            <a href="process/upstat.php?img_id=<?=$row['img_id']; ?>"><i class="fas fa-2x fa-times text-danger"></i></a>
-                    <?php
-                        }
-                    ?>
-                </td>
-                <td><?=$row['mem_id']; ?> : <?=$row['name']; ?></td>
-                <td class="text-center"><?=$row['posted_at']; ?></td>
-                <td class="text-center">
-                    <a href="admin-edit.php?img_id=<?=$row['img_id']; ?>" class="btn btn-sm btn-warning text-white">
-                        <i class="fas fa-edit"></i> Edit
-                    </a> 
-                </td>
-                <td class="text-center">
-                    <a href="#" onclick="deleteItem(<?=$row['img_id']; ?>);" class="btn btn-sm btn-danger">
-                        <i class="fas fa-trash-alt"></i> Delete
-                    </a>
-                </td>
-            </tr>
-        <?php
-                }
-            
-        ?>
-        </tbody>
-        <tfoot>
-            <tr class="text-center">
-                <th>ID</th>
-                <th>Photo</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Vote</th>
-                <th>Status</th>
-                <th>Mem_id</th>
-                <th>Post_at</th>
-                <th>Edit</th>
-                <th>Delete</th>
-            </tr>
-        </tfoot>
-    </table>
+    <section>
+        <a href="exportxls.php" class="btn btn-success my-3"><i class="fas fa-cloud-download-alt"></i> Excel</a>
+        <table id="dataTable" class="table table-bordered table-striped">
+            <thead>
+                <tr class="text-center">
+                    <th>ID</th>
+                    <th>Photo</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Vote</th>
+                    <th>Status</th>
+                    <th>Owner ( id : name )</th>
+                    <th>Post_at</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        ?>
+                <tr>
+                    <td class="text-center"><?=$row['img_id']; ?></td>
+                    <td><img class="img-fluid d-block mx-auto" src="../assets/images/<?=$row['image']; ?>" width="150px" alt=""></td>
+                    <td><?=$row['img_name']; ?></td>
+                    <td><?=$row['description']; ?></td>
+                    <td class="text-center"><?=$row['vote']; ?></td>
+                    <td class="text-center">
+                        <button class="btn make" id="<?php echo $row['img_id'] ?>" data-img_id="<?php echo $row['img_id'] ?>" data-status="<?php echo $row['status'] ?>">
+                            <i class="fas fa-check fa-2x text-success <?php echo $row['status'] ? 'd-block': 'd-none' ?>"></i>
+                            <i class="fas fa-2x fa-times text-danger <?php echo $row['status'] ? 'd-none': 'd-block' ?>"></i>
+                        </button>
+                    </td>
+                    <td><?=$row['mem_id']; ?> : <?=$row['name']; ?></td>
+                    <td class="text-center"><?=$row['posted_at']; ?></td>
+                </tr>
+            <?php
+                    }
+                
+            ?>
+            </tbody>
+            <tfoot>
+                <tr class="text-center">
+                    <th>ID</th>
+                    <th>Photo</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Vote</th>
+                    <th>Status</th>
+                    <th>Owner ( id : name )</th>
+                    <th>Post_at</th>
+                </tr>
+            </tfoot>
+        </table>
+    </section>
+    <br>
+
 
     <!-- Section on to top -->
     <div class="to-top">
@@ -181,13 +165,37 @@
             $('#dataTable').DataTable();
         } );
 
-        function deleteItem (id) { 
-            if( confirm('Are you sure, you want to delete this item?') == true){
-                window.location=`process/admin-delete.php?img_id=${id}`;
-                // window.location='delete.php?id='+id;
-                }
-            };
     </script>
-    
+
+    <script>
+
+        $(".make").click(function(event) {
+            var img_id = $(this).data('img_id'),
+                status = $(this).data('status') ? 0 : 1  ,
+                check = '#' + $(this).data('img_id') +' '+ '.fa-check', 
+                times = '#' + $(this).data('img_id') +' '+ '.fa-times',
+                id = '#' + $(this).data('img_id')
+
+            $.ajax({
+                url: "process/swap.php",
+                data: {img_id: img_id, status: status},
+                type: "POST",
+                dataType: "json"
+            }).done(function(result) {
+                $(id).data('status', status);
+                if(parseInt(result.status)) {
+                    $(check).addClass('d-block')
+                    $(check).removeClass('d-none')
+                    $(times).addClass('d-none')
+                    $(times).removeClass('d-block')
+                } else {    
+                    $(check).addClass('d-none')
+                    $(check).removeClass('d-block')
+                    $(times).addClass('d-block')
+                    $(times).removeClass('d-none')
+                }
+            });
+        });
+</script>
 </body>
 </html>

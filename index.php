@@ -1,6 +1,6 @@
 <?php 
     require_once('php/connect.php');
-    $sql = "SELECT COUNT(*) AS total FROM `photo` WHERE `status` = 0 ";
+    $sql = "SELECT COUNT(*) AS total FROM `photo` WHERE `status` = 1 ";
     $result = mysqli_query($conn,$sql);    
     $row = mysqli_fetch_assoc($result);
 
@@ -19,7 +19,7 @@
     $next_page = $page+1;
     $row_start = ($page - 1) * $per_page;
 
-    $sql = "SELECT * FROM `photo` WHERE `status` = 0 ORDER BY vote DESC LIMIT $row_start , $per_page ";
+    $sql = "SELECT * FROM `photo` WHERE `status` = 1 ORDER BY vote DESC LIMIT $row_start , $per_page ";
     $result = mysqli_query($conn, $sql);
     $num_row = mysqli_num_rows($result);
 ?>
