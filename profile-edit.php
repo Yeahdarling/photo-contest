@@ -103,7 +103,7 @@
                                 <div class="form-group col-12">
                                     <label for="name">ชื่อ - สกุล</label>
                                     <input type="text" class="form-control" id="name" name="name" value="<?php echo $row['name'];?>" >
-                                </div>                       
+                                </div>
                                 <div class="form-group col-12">
                                     <label for="email">E-mail</label>
                                     <input type="email" class="form-control" id="email" name="email" value="<?php echo $row['email'];?>" >
@@ -139,7 +139,36 @@
                 }
                 reader.readAsDataURL(this.files[0])
             }
-        })
+        });
+
+        $("#formUpdate").submit(function(event) {
+            event.preventDefault();
+
+            // validate
+            $.ajax({
+                url: "php/update-pro-ajax.php",
+                data: {name: $("#name").val(), email: $("#email").val(), submit: "1"},
+                type: "POST",
+                dataType: "json"
+            }).done(function(result) {
+                console.log(result);
+                if(result.error == '1') {
+                    alert(result.message);
+                } else {
+                    alert('แก้ใขข้อมูลสำเร็จ');
+                }
+            });
+
+
+
+        });
+
+
+
+
+
+
+
     </script>
 
 </body>

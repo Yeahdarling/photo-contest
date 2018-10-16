@@ -19,7 +19,7 @@
     $next_page = $page+1;
     $row_start = ($page - 1) * $per_page;
 
-    $sql = "SELECT * FROM `photo` WHERE `status` = 0 ORDER BY img_id ASC LIMIT $row_start , $per_page ";
+    $sql = "SELECT * FROM `photo` WHERE `status` = 0 ORDER BY vote DESC LIMIT $row_start , $per_page ";
     $result = mysqli_query($conn, $sql);
     $num_row = mysqli_num_rows($result);
 ?>
@@ -71,7 +71,7 @@
                 <?php 
                     if (isset($_SESSION['mem_id'])) {
                 ?>
-                        <h3 class="text-center text-success mt-3">คุณมี [ <?php echo $point['points'] ?> ] สิทธิ์ลงคะแนน</h3>
+                        <h3 class="text-center text-success mt-3">คุณมี [ <span id="point"><?php echo $point['points'] ?></span> ] สิทธิ์ลงคะแนน</h3>
                 <?php
                 }
                 ?>
@@ -117,7 +117,7 @@
                 <!-- /modal -->
 
                     <div class="text-center text-primary pt-1">
-                        ได้รับ ( <?php echo $row['vote']; ?> ) คะแนน
+                        ได้รับ ( <span id="vote<?=$row['img_id'] ?>"><?php echo $row['vote']; ?></span> ) คะแนน
                     </div>
                     <div class="card-body margin-t">
                         <h4 class="card-text text-center"><?php echo $row['img_name'] ?></h4>
@@ -136,12 +136,14 @@
                                 } else {
                                     if ($point['points'] <= 0) {
                                     ?>
-                                    <button class="btn btn-danger d-block mx-auto" disabled>คุณสิทธิ์ลงคะแนนไปหมดแล้ว</button>
+                                    <button class="btn btn-danger d-block mx-auto" disabled>คุณใช้สิทธิ์ลงคะแนนไปหมดแล้ว</button>
                         <?php
                                     } else {
                                     ?>
                                     <div class="text-center">
-                                        <a href="php/vote.php?img_id=<?php echo $row['img_id'] ?>" style="width: 200px;" class="btn btn-danger text-light">+1 <i class="fas fa-heart"></i></a>
+                                        <button style="width: 200px;" class="btn btn-danger text-light vote-btn"
+                                                data-img_id="<?php echo $row['img_id'] ?>">+1 <i class="fas fa-heart"></i>
+                                        </button>
                                     </div>
                         <?php
                                     }
@@ -196,5 +198,37 @@
     <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="assets/js/main.js"></script>
+
+    <script>
+
+    $(".vote-btn").click(function(event) {
+        var img_id = $(this).data('img_id');
+        
+        $.ajax({
+                url: "php/vote-ajax.php",
+                data: {img_id: img_id},
+                type: "POST",
+                dataType: "json"
+            }).done(function(result) {
+                console.log(result);
+                $('#point').text(result.point);
+                $('#vote'+img_id).text(result.vote);
+                if(result.point <= 0 ) {
+                    $('.vote-btn').attr("disabled", true);
+                    $('.vote-btn').text('คุณใช้สิทธิ์โหวดหมดแล้ว');
+                }
+                if(result.error == '1') {
+                    alert(result.message);
+                } else {
+                    alert('ใช้ 1 สิทธิ์ลงคะแนน');
+                }
+        });
+    });
+
+
+
+
+    </script>
+
 </body>
 </html>

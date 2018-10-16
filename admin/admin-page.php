@@ -6,28 +6,8 @@
         exit;
     }
 
-    $sql = "SELECT COUNT(*) AS total FROM photo";
+    $sql = "SELECT * FROM photo";
     $result = mysqli_query($conn,$sql);    
-    $row = mysqli_fetch_assoc($result);
-
-    $total_rows = $row['total'];
-
-    $per_page = 10; //per page
-    $page = isset($_GET['page']) ? $_GET['page'] : 1;
-    $total_page = ceil($total_rows / $per_page);
-
-    if ($page > $total_page || $page < 1) {
-        header('Location: index.php');
-        exit;
-    }
-
-    $prev_page = $page-1;
-    $next_page = $page+1;
-    $row_start = ($page - 1) * $per_page;
-
-    $sql = "SELECT * FROM photo ORDER BY img_id ASC LIMIT $row_start , $per_page ";
-    $result = mysqli_query($conn, $sql);
-    $num_row = mysqli_num_rows($result);
 
 ?>
 <!DOCTYPE html>
@@ -48,6 +28,7 @@
     <link rel="stylesheet" href="../node_modules/font-awesome5/css/fontawesome-all.css">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
     <link href="https://fonts.googleapis.com/css?family=Mitr" rel="stylesheet">
     <title>admin system</title>
 
@@ -111,7 +92,7 @@
     <!-- content -->
     <table id="dataTable" class="table table-bordered table-striped">
         <thead>
-            <tr>
+            <tr class="text-center">
                 <th>ID</th>
                 <th>Photo</th>
                 <th>Name</th>
@@ -126,7 +107,6 @@
         </thead>
         <tbody>
         <?php 
-            if ($num_row > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     ?>
             <tr>
@@ -163,9 +143,7 @@
             </tr>
         <?php
                 }
-            } else {
-                echo 'No Data';
-            }
+            
         ?>
         </tbody>
         <tfoot>
@@ -183,20 +161,6 @@
             </tr>
         </tfoot>
     </table>
-    <!-- paging -->
-    <div class="text-center">
-        <?php
-            if ($total_page > 1) {
-                for($i = 1; $i<=$total_page; $i++) {
-        ?>
-        <a href="admin-page.php?page=<?php echo $i;?>"> 
-                <span class="mb-3 btn btn-outline-primary <?=$page==$i?'active':''; ?> "><?php echo $i; ?></span></li>
-        </a>
-        <?php
-                }
-            }
-        ?>
-    </div>
 
     <!-- Section on to top -->
     <div class="to-top">
@@ -208,17 +172,22 @@
     
 
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
     <script src="../node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="../assets/js/main.js"></script>
     <script>
+        $(document).ready( function () {
+            $('#dataTable').DataTable();
+        } );
+
         function deleteItem (id) { 
             if( confirm('Are you sure, you want to delete this item?') == true){
                 window.location=`process/admin-delete.php?img_id=${id}`;
                 // window.location='delete.php?id='+id;
                 }
             };
-
     </script>
+    
 </body>
 </html>
