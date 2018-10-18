@@ -8,7 +8,7 @@
         $result = $conn->query($sql) or die($conn->error);
         if ($result) {
             echo '<script> alert("Deleted !!?") </script>';
-            header('refresh:0; url=../admin-page.php');
+            header('refresh:0; url=../index.php');
         }
     }
 

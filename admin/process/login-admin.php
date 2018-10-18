@@ -15,7 +15,7 @@
                 $_SESSION['admin_name'] = $row['admin_name'];
                 
                 if (isset($_SESSION['admin_name'])) {
-                    header('location:../admin-page.php');
+                    header('location:../index.php');
                 }
             } else {
                 echo '<script> alert("รหัสผ่านไม่ถูกต้อง")</script>';
@@ -26,7 +26,7 @@
             header('Refresh:0; url=../admin-login.php');
         }
     } else {
-        header('location:../admin-page.php');
+        header('location:../index.php');
     }
 
 ?>

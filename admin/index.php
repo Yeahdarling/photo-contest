@@ -1,7 +1,7 @@
 <?php
     require_once('../php/connect.php');
     if (!isset($_SESSION['admin_name'])) {
-        echo '<script> alert(" Isset ??") </script>';
+        echo '<script> alert("กรุณา Login") </script>';
         header('refresh:0; url=admin-login.php');
         exit;
     }
@@ -61,7 +61,7 @@
                                 <img src="../assets/images/mib.jpg" class="rounded-circle" width="30px" alt="">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="admin-page.php">photo</a>
+                                <a class="dropdown-item" href="index.php">photo</a>
                                 <a class="dropdown-item" href="admin-user.php">user</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="process/logout.php">Log out</a>

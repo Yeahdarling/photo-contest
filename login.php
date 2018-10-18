@@ -65,9 +65,6 @@
                         </form>
                     </div>
                 </div>
-                <div class="text-center p-3">
-                    login facebook
-                </div>
             </div>
         </div>
     </div>

@@ -87,7 +87,7 @@
         </div>
     </div>
 
-    <!-- test facebook login -->
+<!-- test facebook login -->
     <!-- <script>
         
         function statusChangeCallback(response) {

@@ -12,10 +12,10 @@
         $result = $conn->query($sql) or die($sql->error);
         if ($result) {
             echo '<script> alert(" Edit finished !!?") </script>';
-            header('refresh:0; url=../admin-page.php');
+            header('refresh:0; url=../index.php');
         }
     } else {
-        header('refresh:0; url=../admin-page.php');
+        header('refresh:0; url=../index.php');
     }
 
 ?>

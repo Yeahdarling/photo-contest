@@ -80,7 +80,7 @@
                                 <img src="../assets/images/mib.jpg" class="rounded-circle" width="30px" alt="">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="admin-page.php">photo</a>
+                                <a class="dropdown-item" href="index.php">photo</a>
                                 <a class="dropdown-item" href="admin-user.php">user</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="process/logout.php">Log out</a>
@@ -166,7 +166,7 @@
             if ($total_page > 1) {
                 for($i = 1; $i<=$total_page; $i++) {
         ?>
-        <a href="admin-page.php?page=<?php echo $i;?>"> 
+        <a href="index.php?page=<?php echo $i;?>"> 
                 <span class="mb-3 btn btn-outline-primary <?=$page==$i?'active':''; ?> "><?php echo $i; ?></span></li>
         </a>
         <?php

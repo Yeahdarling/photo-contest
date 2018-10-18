@@ -107,7 +107,7 @@
                         <input type="text" class="form-control" name="description" id="description" value="<?=$row['description'] ?>">
                     </div>
                         <input type="hidden" class="form-control" name="img_id" id="img_id" value="<?=$row['img_id'] ?>">
-                    <a href="admin-page.php" class="d-block mt-3 btn btn-warning float-left">ย้อนกลับ</a>
+                    <a href="index.php" class="d-block mt-3 btn btn-warning float-left">ย้อนกลับ</a>
                     <input name="submit" type="submit" id="submit" class="d-block mt-3 btn btn-primary ml-auto" value="บันทึก">
                 </div>
             </form>
