@@ -76,10 +76,10 @@
                             </div>
                         </form>
 
-                        <!-- <form class="form" id="facebookLogin" method="POST" action="php/facebooklogin.php">
-                            <input name="name" id="facebook_name" type="text">
-                            <input name="facebook_id" id="facebook_id" type="text" >
-                        </form> -->
+                        <form class="form" id="facebookLogin" method="POST" action="php/facebooklogin.php">
+                            <input name="name" id="facebook_name" type="hidden">
+                            <input name="facebook_id" id="facebook_id" type="hidden" >
+                        </form>
 
                     </div>
                 </div>
@@ -88,17 +88,18 @@
     </div>
 
 <!-- test facebook login -->
-    <!-- <script>
+    <script>
         
         function statusChangeCallback(response) {
             console.log('statusChangeCallback');
             console.log(response);
             if (response.status === 'connected') {
 
+            
+            
             testAPI();
             } else {
-            document.getElementById('status').innerHTML = 'Please log ' +
-                'into this app.';
+            document.getElementById('status').innerHTML = 'Please log ' + 'into this app.';
             }
         }
 
@@ -142,18 +143,21 @@
             FB.api('/me', function(response) {
             console.log('Successful login for: ' + response.name);
             console.log(response);
-            document.getElementById('status').innerHTML =
-                'Thanks for logging in, ' + response.name + '!';
+            // document.getElementById('status').innerHTML = 'Thanks for logging in, ' + response.name + '!';
             document.getElementById('facebook_id').value = response.id;
             document.getElementById('facebook_name').value = response.name;
-            document.getElementById('facebookLogin').submit();
-                
-                
+                $('#loginFacebook').hide();
+                $('#loginOk').attr('type', 'button');
+
+                $('#loginOk').click(function(){
+                    document.getElementById('facebookLogin').submit();
+                });
+
             });
         }
     </script>
 
-    <div class="text-center p-3">
+    <div id="loginFacebook" class="text-center p-3">
         <div class="fb-login-button" 
             data-onlogin="statusChangeCallback"
             data-max-rows="1" 
@@ -164,9 +168,10 @@
             data-use-continue-as="false">
         </div>
     </div>
+    <input id="loginOk" type="hidden" value="Continue with your Facebook (click)" class="btn btn-primary d-block mx-auto">
 
     <div id="status">
-    </div> -->
+    </div>
 
 <!-- end -->
 

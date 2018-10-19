@@ -11,7 +11,7 @@
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown ml-auto">
                 <?php 
-                    if (isset($_SESSION['name'])) {
+                    if (isset($_SESSION['name']) || isset($_SESSION['facebook_id'])) {
                         ?>
                         <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <?php echo $_SESSION['name']; ?>
